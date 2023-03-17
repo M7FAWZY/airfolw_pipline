@@ -1,5 +1,6 @@
 # airfolw_pipline
 problem of run
+
 root@e07e5fd54b03:/home/workspace# /opt/airflow/start.sh
 [2023-03-17 16:35:57,156] {settings.py:174} INFO - settings.configure_orm(): Using pool settings. pool_size=5, pool_recycle=1800, pid=1529
 [2023-03-17 16:35:57,867] {__init__.py:51} INFO - Using executor LocalExecutor 
@@ -41,4 +42,6 @@ Logfiles: - -
 =================================================================            
 Waiting for Airflow web server...
 Airflow web server is ready
+
+
 
