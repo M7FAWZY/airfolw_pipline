@@ -8,6 +8,7 @@ from airflow.operators import (StageToRedshiftOperator, LoadFactOperator,
                                 LoadDimensionOperator, DataQualityOperator)
 
 from airflow.operators.subdag_operator import SubDagOperator
+from subdag import load_dimension_subdag
 from helpers import SqlQueries
 
 # AWS_KEY = os.environ.get('AWS_KEY')
@@ -81,10 +82,11 @@ load_songplays_table = LoadFactOperator(
     dag=dag,
     redshift_connection_id='redshift',
     target_table='songplays',
-    
+    drop_table=True,
     create_query=SqlQueries.create_songplays_table,
-    insert_query=SqlQueries.songplay_table_insert
-    #append=False,Do not use; Need append in fact table
+    insert_query=SqlQueries.songplay_table_insert,
+    conn_id='redshift',
+    append=True#Do not use append=False ; Need append in fact table
     #start_date=start_date
 )
 
@@ -92,14 +94,20 @@ load_songplays_table = LoadFactOperator(
 load_user_dimension_task="Load_user_dimension_table"
 load_user_dimension_table = SubDagOperator(
     subdag=load_dimension_subdag(
-        parent_dag_name=dag_name,
-        
+        parent_dag_name='udac_example_dag',
+        task_id=load_user_dimension_task,
         redshift_conn_id="redshift",
-        start_date=default_args['start_date'],
-        create_query=SqlQueries.create_users_table,
+        aws_credentials_id='aws_credentials',
+        
+        table = 'users',
+        
+        create_query=SqlQueries.create_users_table,       
         insert_query=SqlQueries.user_table_insert,
-        delete_load = True,
-        table_name = "users",
+        
+        s3_bucket="udacity-dend",
+        s3_key="song_data",
+        delete_load = True,       
+        start_date=default_args['start_date'],
         #start_date=start_date,
     ),
     task_id=load_user_dimension_task,
@@ -109,14 +117,21 @@ load_user_dimension_table = SubDagOperator(
 load_song_dimension_task ="Load_song_dimension_table"
 load_song_dimension_table = SubDagOperator(
     subdag=load_dimension_subdag(
-        parent_dag_name=dag_name,
-        
+        parent_dag_name='udac_example_dag',
+        task_id=load_user_dimension_task,
         redshift_conn_id="redshift",
+        aws_credentials_id='aws_credentials',
+        
+        table = 'songs',
+        
+        create_query=SqlQueries.create_users_table,       
+        insert_query=SqlQueries.user_table_insert,
+        
+        s3_bucket="udacity-dend",
+        s3_key="song_data",
+        delete_load = True,       
         start_date=default_args['start_date'],
-        create_query=SqlQueries.create_songs_table,
-        insert_query=SqlQueries.song_table_insert,
-        delete_load = True,
-        table_name = "songs",
+                
         #start_date=start_date,
     ),
     task_id=load_song_dimension_task,
@@ -125,14 +140,21 @@ load_song_dimension_table = SubDagOperator(
 load_artist_dimension_task = "Load_artist_dimension_table"
 load_artist_dimension_table = SubDagOperator(
     subdag=load_dimension_subdag(
-        parent_dag_name=dag_name,
-       
+        parent_dag_name='udac_example_dag',
+        task_id=load_user_dimension_task,
         redshift_conn_id="redshift",
+        aws_credentials_id='aws_credentials',
+        
+        table = 'artists',
+        
+        create_query=SqlQueries.create_users_table,       
+        insert_query=SqlQueries.user_table_insert,
+        
+        s3_bucket="udacity-dend",
+        s3_key="song_data",
+        delete_load = True,       
         start_date=default_args['start_date'],
-        create_query=SqlQueries.create_artist_table,
-        insert_query=SqlQueries.artist_table_insert,
-        delete_load = True,
-        table_name = "artists",
+         
         #start_date=start_date,
     ),
     task_id=load_artist_dimension_task,
@@ -142,14 +164,21 @@ load_artist_dimension_table = SubDagOperator(
 load_time_dimension_task="Load_time_dimension_table"
 load_time_dimension_table = SubDagOperator(
     subdag=load_dimension_subdag(
-        parent_dag_name=dag_name,
-        
+        parent_dag_name='udac_example_dag',
+        task_id=load_user_dimension_task,
         redshift_conn_id="redshift",
+        aws_credentials_id='aws_credentials',
+        
+        table = 'time',
+        
+        create_query=SqlQueries.create_users_table,       
+        insert_query=SqlQueries.user_table_insert,
+        
+        s3_bucket="udacity-dend",
+        s3_key="song_data",
+        delete_load = True,       
         start_date=default_args['start_date'],
-        create_query=SqlQueries.create_time_table,
-        insert_query=SqlQueries.time_table_insert,
-        delete_load = True,
-        table_name = "time",
+         
         #start_date=start_date,
     ),
     task_id=load_time_dimension_task,
