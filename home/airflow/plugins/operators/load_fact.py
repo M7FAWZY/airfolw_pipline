@@ -1,4 +1,5 @@
-from airflow.hooks.postgres_hook import PostgresHook
+ from airflow.hooks.postgres_hook import PostgresHook
+from airflow.operators.postgres_operator import PostgresOperator
 from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 
@@ -13,25 +14,29 @@ class LoadFactOperator(BaseOperator):
                  # Example:
                  # conn_id = your-connection-name
     def __init__(self,                
-                 conn_id,
-                 drop_table,
-                 target_table,
-                 create_query,
-                 insert_query,
-                 append,
+                 redshift_conn_id='',
+                 aws_credentials_id='',
+                 
+                 target_table='',
+                 create_query='',
+                 insert_query='',
+                 drop_table=True,
+                 append=True,
+                 
                  *args, **kwargs):
 
         super(LoadFactOperator, self).__init__(*args, **kwargs)
         # Map params here
         # Example:
         # self.conn_id = conn_id
-        self.conn_id = conn_id
+        self.conn_id = redshift_conn_id
+        self.aws_credentials_id=aws_credentials_id
         self.drop_table = drop_table
         self.target_table = target_table
         self.create_query = create_query
         self.insert_query = insert_query
         self.append = append
-
+        
     def execute(self, context):
         self.hook = PostgresHook(postgres_conn_id=self.conn_id)
         if self.drop_table:
@@ -54,3 +59,4 @@ class LoadFactOperator(BaseOperator):
         self.log.info('Inserting data from staging table...')
         self.hook.run(self.insert_query)
         self.log.info("Insert execution complete...")
+         
