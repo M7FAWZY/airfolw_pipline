@@ -1,4 +1,5 @@
 from airflow.hooks.postgres_hook import PostgresHook
+from airflow.operators.postgres_operator import PostgresOperator
 from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 import os
@@ -39,6 +40,7 @@ class DataQualityOperator(BaseOperator):
         
         # From reviewer and  <https://docs.astronomer.io/learn/airflow-sql-data-quality>
         # also <https://knowledge.udacity.com/questions/552650>
+        redshift_hook = PostgresHook("redshift")
         for stmt in self.check_stmts:
             result = int(redshift_hook.get_first(sql=stmt['sql'])[0])
             # check if equal
@@ -55,5 +57,7 @@ class DataQualityOperator(BaseOperator):
                     raise AssertionError(f"Check failed: {result} {stmt['op']} {stmt['val']}")
             self.log.info(f"Passed check: {result} {stmt['op']} {stmt['val']}")
                 
+        
+        
         
         
