@@ -1,13 +1,13 @@
-<https://docs.astronomer.io/learn/data-quality>
-<https://docs.astronomer.io/learn/testing-airflow?tab=traditional#debug-interactively-with-dagtest>
-<https://docs.astronomer.io/learn/subdags>
-<https://docs.astronomer.io/learn/cross-dag-dependencies>
-<https://docs.astronomer.io/learn/task-groups>
-<https://docs.astronomer.io/learn/airflow-sql-data-quality>
-<https://docs.astronomer.io/learn/connections>
-<https://knowledge.udacity.com/questions/968314>
-<https://knowledge.udacity.com/questions/966540>
-<https://knowledge.udacity.com/questions/552650>
-<https://knowledge.udacity.com/questions/556678>
-<https://knowledge.udacity.com/questions/556140>
-<https://knowledge.udacity.com/questions/968314>
+<https://docs.astronomer.io/learn/data-quality> <br>
+<https://docs.astronomer.io/learn/testing-airflow?tab=traditional#debug-interactively-with-dagtest> <br>
+<https://docs.astronomer.io/learn/subdags> <br>
+<https://docs.astronomer.io/learn/cross-dag-dependencies> <br>
+<https://docs.astronomer.io/learn/task-groups> <br>
+<https://docs.astronomer.io/learn/airflow-sql-data-quality> <br>
+<https://docs.astronomer.io/learn/connections> <br>
+<https://knowledge.udacity.com/questions/968314> <br>
+<https://knowledge.udacity.com/questions/966540> <br>
+<https://knowledge.udacity.com/questions/552650> <br>
+<https://knowledge.udacity.com/questions/556678> <br>
+<https://knowledge.udacity.com/questions/556140> <br>
+<https://knowledge.udacity.com/questions/968314> <br>
