@@ -9,6 +9,8 @@ from airflow.operators import (StageToRedshiftOperator, LoadFactOperator,
 
 from airflow.operators.subdag_operator import SubDagOperator
 from subdag import load_dimension_subdag
+from airflow.hooks.postgres_hook import PostgresHook
+from airflow.operators.postgres_operator import PostgresOperator
 from helpers import SqlQueries
 
 # AWS_KEY = os.environ.get('AWS_KEY')
@@ -80,13 +82,15 @@ stage_songs_to_redshift = StageToRedshiftOperator(
 load_songplays_table = LoadFactOperator(
     task_id='Load_songplays_fact_table',
     dag=dag,
-    redshift_connection_id='redshift',
+    redshift_conn_id="redshift",
+    aws_credentials_id='aws_credentials',
     target_table='songplays',
-    drop_table=True,
+    
     create_query=SqlQueries.create_songplays_table,
     insert_query=SqlQueries.songplay_table_insert,
-    conn_id='redshift',
+    drop_table=True,
     append=True#Do not use append=False ; Need append in fact table
+    #conn_id='redshift'
     #start_date=start_date
 )
 
