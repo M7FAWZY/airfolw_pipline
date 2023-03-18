@@ -1,4 +1,5 @@
 from airflow.hooks.postgres_hook import PostgresHook
+from airflow.operators.postgres_operator import PostgresOperator
 from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 
@@ -13,11 +14,15 @@ class LoadDimensionOperator(BaseOperator):
                  # Example:
                  # conn_id = your-connection-name
     def __init__(self,                 
-                 conn_id,
-                 drop_table,
-                 target_table,
+                 redshift_conn_id,
+                 aws_credentials_id,                 
+                 
                  create_query,
                  insert_query,
+                 
+                 table,
+                 
+                 drop_table,               
                  append,
                  *args, **kwargs):
 
@@ -25,9 +30,10 @@ class LoadDimensionOperator(BaseOperator):
         # Map params here
         # Example:
         # self.conn_id = conn_id
-        self.conn_id = conn_id
+        self.conn_id = redshift_conn_id
+        self.aws_credentials_id=aws_credentials_id
+        self.target_table = table
         self.drop_table = drop_table
-        self.target_table = target_table
         self.create_query = create_query
         self.insert_query = insert_query
         self.append = append
